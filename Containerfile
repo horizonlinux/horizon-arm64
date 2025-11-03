@@ -1,4 +1,6 @@
-FROM docker.io/archlinux/archlinux:latest AS builder
+FROM scratch AS ctx
+
+FROM docker.io/archlinux/archlinux:latest
 
 ENV DEV_DEPS="base-devel git rust"
 
