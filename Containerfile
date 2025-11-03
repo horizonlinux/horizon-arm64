@@ -103,7 +103,7 @@ RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
   pacman -Syyuu --noconfirm plasma-setup-git && \
   pacman -S --noconfirm --clean && \
   rm -rf /var/cache/pacman/pkg/* && \
-  systemctl enable plasma-setup && \
+  systemctl enable plasma-setup
 
 RUN rm -rf /var /boot /home /root /usr/local /srv && \
     mkdir -p /var /boot /sysroot && \
