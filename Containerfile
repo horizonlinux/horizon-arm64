@@ -108,6 +108,15 @@ RUN #echo "[horizon-pacman]" >> /etc/pacman.conf && \
   rm -rf /var/cache/pacman/pkg/*
   #systemctl enable plasma-setup
 
+# ---------------------------
+# Generate reproducible dracut initramfs
+# ---------------------------
+RUN KVER=$(basename "$(find /usr/lib/modules -maxdepth 1 -type d | grep -v -E '*.img' | tail -n 1)") && \
+    echo "$KVER" > kernel_version.txt && \
+    dracut --force --no-hostonly --reproducible --zstd --verbose --kver "$KVER" \
+           --add ostree "/usr/lib/modules/$KVER/initramfs.img" && \
+    rm kernel_version.txt
+
 RUN rm -rf /var /boot /home /root /usr/local /srv && \
     mkdir -p /var /boot /sysroot && \
     ln -s /var/home /home && \
