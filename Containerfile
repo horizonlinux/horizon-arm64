@@ -23,6 +23,7 @@ RUN pacman -Sy --noconfirm \
       ostree \
       shadow \
       sudo \
+      open-vm-tools \
       ${DEV_DEPS} && \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
@@ -72,7 +73,6 @@ RUN pacman -Syyuu --noconfirm \
        orca \
        ptyxis \
        rygel \
-       sushi \
        tecla \
        xdg-desktop-portal-gnome \
        xdg-user-dirs-gtk && \
