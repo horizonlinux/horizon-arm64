@@ -42,6 +42,7 @@ RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
 
 RUN pacman -Syyuu --noconfirm \
        gdm \
+       glibc-locales \
        gnome-backgrounds \
        gnome-color-manager \
        gnome-control-center \
@@ -81,8 +82,7 @@ RUN pacman -Syyuu --noconfirm \
   systemctl enable gdm
 
 # Setup a temporary root passwd (changeme) for dev purposes
-# RUN pacman -S 
-# RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
+RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
 
 RUN rm -rf /boot /home /root /usr/local /srv && \
     mkdir -p /var/{home,roothome,srv} /sysroot /boot && \
