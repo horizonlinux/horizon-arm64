@@ -50,6 +50,7 @@ RUN pacman -Syyuu --noconfirm \
        bluedevil \
        breeze \
        breeze-gtk \
+       dolphin \
        drkonqi \
        flatpak-kcm \
        kactivitymanagerd \
@@ -61,6 +62,7 @@ RUN pacman -Syyuu --noconfirm \
        kinfocenter \
        kmenuedit \
        knighttime \
+       konsole \
        kpipewire \
        kscreen \
        kscreenlocker \
