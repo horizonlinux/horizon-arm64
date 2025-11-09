@@ -44,44 +44,70 @@ RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
     pacman -S --clean --noconfirm
 
 RUN pacman -Syyuu --noconfirm \
-       gdm \
-       glibc-locales \
-       gnome-backgrounds \
-       gnome-color-manager \
-       gnome-control-center \
-       gnome-disk-utility \
-       gnome-initial-setup \
-       gnome-keyring \
-       gnome-menus \
-       gnome-session \
-       gnome-settings-daemon \
-       gnome-shell \
-       gnome-user-share \
-       grilo-plugins \
-       gvfs \
-       gvfs-afc \
-       gvfs-dnssd \
-       gvfs-goa \
-       gvfs-google \
-       gvfs-gphoto2 \
-       gvfs-mtp \
-       gvfs-nfs \
-       gvfs-onedrive \
-       gvfs-smb \
-       gvfs-wsdd\
-       malcontent \
-       nautilus \
-       networkmanager \
-       orca \
-       ptyxis \
-       rygel \
-       tecla \
-       xdg-desktop-portal-gnome \
-       xdg-user-dirs-gtk && \
+       aurorae \
+       bluedevil \
+       breeze \
+       breeze-gtk \
+       drkonqi \
+       flatpak-kcm \
+       kactivitymanagerd \
+       kde-cli-tools \
+       kde-gtk-config \
+       kdecoration \
+       kdeplasma-addons \
+       kglobalacceld \
+       kinfocenter \
+       kmenuedit \
+       knighttime \
+       kpipewire \
+       kscreen \
+       kscreenlocker \
+       ksshaskpass \
+       ksystemstats \
+       kwallet-pam \
+       kwayland \
+       kwin \
+       kwrited \
+       layer-shell-qt \
+       libkscreen \
+       libksysguard \
+       libplasma \
+       milou \
+       ocean-sound-theme \
+       plasma-activities \
+       plasma-activities-stats \
+       plasma-browser-integration \
+       plasma-desktop \
+       plasma-disks \
+       plasma-firewall \
+       plasma-integration \
+       plasma-nm \
+       plasma-pa \
+       plasma-systemmonitor \
+       plasma-thunderbolt \
+       plasma-vault \
+       plasma-welcome \
+       plasma-workspace \
+       plasma-workspace-wallpapers \
+       polkit-kde-agent \
+       powerdevil \
+       print-manager \
+       sddm-kcm \
+       spectacle \
+       systemsettings \
+       xdg-desktop-portal-kde && \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/* && \
   systemctl enable NetworkManager && \
-  systemctl enable gdm
+  systemctl enable sddm
+
+RUN systemd-sysusers
+
+RUN echo "[horizon-pacman]\nSigLevel = Optional TrustAll\nServer = https://horizonlinux.github.io/pacman/\$arch" && \
+    pacman -Syyuu --noconfirm plasma-setup-git && \
+  pacman -S --clean && \
+  rm -rf /var/cache/pacman/pkg/* && \
+  systemctl enable plasma-setup && \
 
 # Setup a temporary root passwd (changeme) for dev purposes
 RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
