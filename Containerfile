@@ -104,12 +104,12 @@ RUN pacman -Syyuu --noconfirm \
 RUN systemd-sysusers
 
 RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
-echo "[SigLevel = Optional TrustAll\" >> /etc/pacman.conf && \
+echo "SigLevel = Optional TrustAll\" >> /etc/pacman.conf && \
 echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
   pacman -Syyuu --noconfirm plasma-setup-git && \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/* && \
-  systemctl enable plasma-setup && \
+  systemctl enable plasma-setup
 
 # Setup a temporary root passwd (changeme) for dev purposes
 RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
