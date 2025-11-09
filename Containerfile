@@ -126,7 +126,7 @@ RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
 RUN systemctl enable plasma-setup && systemd-sysusers
 
 # Setup a temporary root passwd (changeme) for dev purposes
-RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
+# RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
 
 RUN rm -rf /boot /home /root /usr/local /srv && \
     mkdir -p /var/{home,roothome,srv} /sysroot /boot && \
