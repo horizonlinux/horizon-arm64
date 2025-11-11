@@ -154,28 +154,18 @@ RUN pacman -Syyuu --noconfirm \
   systemctl enable NetworkManager && \
   systemctl enable sddm
 
-# Create build user
-RUN useradd -m --shell=/bin/bash build && usermod -L build && \
-    cp /etc/sudoers /etc/sudoers.bak && \
-    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN systemd-sysusers
 
-USER build
-WORKDIR /home/build
-RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
-    cd /tmp/kiss && \ 
-    makepkg -si --noconfirm
-
-USER root
-WORKDIR /
-
-RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
-    pacman -Rns --noconfirm base-devel git rust
-
-RUN systemd-sysusers && systemctl enable plasma-setup
+RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
+echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
+echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
+  pacman -Syyuu --noconfirm plasma-setup-git && \
+  pacman -S --clean && \
+  rm -rf /var/cache/pacman/pkg/* && \
+  systemctl enable plasma-setup
 
 # Setup a temporary root passwd (changeme) for dev purposes
-# RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
+RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
 
 RUN rm -rf /boot /home /root /usr/local /srv && \
     mkdir -p /var/{home,roothome,srv} /sysroot /boot && \
