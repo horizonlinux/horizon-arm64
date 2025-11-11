@@ -172,7 +172,7 @@ WORKDIR /
 RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
     pacman -Rns --noconfirm base-devel git rust
 
-RUN systemctl enable plasma-setup && systemd-sysusers
+RUN systemd-sysusers && systemctl enable plasma-setup
 
 # Setup a temporary root passwd (changeme) for dev purposes
 # RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
