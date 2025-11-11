@@ -68,8 +68,7 @@ RUN pacman -Syu --noconfirm \
   systemctl enable vmtoolsd.service && \
   systemctl enable vmware-vmblock-fuse.service
 
-RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
-    hwclock --systohc
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 # Workaround due to dracut version bump, please remove eventually
 # FIXME: remove
