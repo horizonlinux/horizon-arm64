@@ -165,11 +165,25 @@ RUN pacman -Syyuu --noconfirm \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/
 
-RUN systemd-sysusers
+# Create build user
+RUN useradd -m --shell=/bin/bash build && usermod -L build && \
+    cp /etc/sudoers /etc/sudoers.bak && \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-RUN pacman -Syyuu --noconfirm plasma-setup-git && \
-  pacman -S --clean && \
-  rm -rf /var/cache/pacman/pkg/*
+USER build
+WORKDIR /home/build
+RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
+    cd /tmp/kiss && \ 
+    makepkg -si --noconfirm
+
+USER root
+WORKDIR /
+
+RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
+    pacman -Rns --noconfirm base-devel git rust
+
+RUN systemd-sysusers
 
 RUN systemctl enable sddm && \
   systemctl enable NetworkManager && \
