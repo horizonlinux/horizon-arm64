@@ -46,9 +46,10 @@ ENV DRACUT_NO_XATTR=1
 
 RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
 echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
-echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf
+echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
+pacman -Syu --noconfirm
 
-RUN pacman -Rns --noconfirm filesystem base dracut fakeroot glibc mkinitcpio plymouth && \
+RUN pacman -Rns --noconfirm filesystem base glibc && \
     pacman -S --clean --noconfirm
 
 RUN pacman -Syu --noconfirm \
