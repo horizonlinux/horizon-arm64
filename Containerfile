@@ -48,6 +48,9 @@ RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
 echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
 echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf
 
+RUN pacman -Rns --noconfirm filesystem base dracut fakeroot glibc mkinitcpio plymouth && \
+    pacman -S --clean --noconfirm
+
 RUN pacman -Syu --noconfirm \
       filesystem-horizon \
       base \
@@ -64,10 +67,13 @@ RUN pacman -Syu --noconfirm \
       dbus \
       dbus-glib \
       glib2 \
+      glibc \
       ostree \
+      mkinitcpio \
       shadow \
       sudo \
       open-vm-tools \
+      plymouth \
       nano \
       vi \
       distrobox \
@@ -90,6 +96,7 @@ RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
     make bin install-all install-initramfs-dracut && \
     sh -c 'export KERNEL_VERSION="$(basename "$(find /usr/lib/modules -maxdepth 1 -type d | grep -v -E "*.img" | tail -n 1)")" && \
     dracut --force --no-hostonly --reproducible --zstd --verbose --kver "$KERNEL_VERSION"  "/usr/lib/modules/$KERNEL_VERSION/initramfs.img"' && \
+    pacman -Rns --noconfirm base-devel rust && \
     pacman -S --clean --noconfirm
 
 RUN pacman -Syyuu --noconfirm \
