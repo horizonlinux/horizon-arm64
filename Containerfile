@@ -64,17 +64,13 @@ RUN pacman -Syu --noconfirm \
       open-vm-tools \
       nano \
       vi \
+      distrobox \
       ${DEV_DEPS} && \
   pacman -S --clean && \
-  rm -rf /var/cache/pacman/pkg/* && \
-  systemctl enable vmtoolsd.service && \
-  systemctl enable vmware-vmblock-fuse.service
+  rm -rf /var/cache/pacman/pkg/*
 
 RUN echo "%wheel      ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
-sed -i '/Defaults env_reset/c\Defaults env_reset,pwfeedback' /etc/sudoers && \
-pacman -Qo /usr/share/pixmaps/archlinux-logo.svg > /etc/logopackage.txt
-
-RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+sed -i '/Defaults env_reset/c\Defaults env_reset,pwfeedback' /etc/sudoers
 
 # Workaround due to dracut version bump, please remove eventually
 # FIXME: remove
@@ -167,12 +163,14 @@ echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
 
-RUN systemctl enable plasma-setup.service && \
+RUN systemctl enable sddm && \
   systemctl enable NetworkManager && \
-  systemctl enable sddm
+  systemctl enable plasma-setup.service && \
+  systemctl enable vmtoolsd.service && \
+  systemctl enable vmware-vmblock-fuse.service
 
 # Setup a temporary root passwd (changeme) for dev purposes
-RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
+# RUN usermod -p "$(echo "changeme" | mkpasswd -s)" root
 
 RUN rm -rf /boot /home /root /usr/local /srv && \
     mkdir -p /var/{home,roothome,srv} /sysroot /boot && \
@@ -188,5 +186,7 @@ RUN sed -i 's|^HOME=.*|HOME=/var/home|' "/etc/default/useradd"
 RUN mkdir -p /usr/lib/ostree && \
     printf  "[composefs]\nenabled = yes\n[sysroot]\nreadonly = true\n" | \
     tee "/usr/lib/ostree/prepare-root.conf"
+
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 RUN bootc container lint
