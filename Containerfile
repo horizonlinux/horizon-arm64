@@ -49,10 +49,7 @@ echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
 echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
 pacman -Syu --noconfirm
 
-RUN pacman -Rdns --noconfirm filesystem && \
-    pacman -S --clean --noconfirm
-
-RUN pacman -Syu --noconfirm \
+RUN pacman -Syu --noconfirm --overwrite "*" \
       filesystem-horizon \
       base \
       dracut \
