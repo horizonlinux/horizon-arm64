@@ -112,10 +112,6 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
 RUN echo "%wheel      ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
 sed -i '/Defaults env_reset/c\Defaults env_reset,pwfeedback' /etc/sudoers
 
-RUN sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/bootc update --quiet|' /usr/lib/systemd/system/bootc-fetch-apply-updates.service && \
-sed -i 's|^OnUnitInactiveSec=.*|OnUnitInactiveSec=7d\nPersistent=true|' /usr/lib/systemd/system/bootc-fetch-apply-updates.timer && \
-systemctl enable bootc-fetch-apply-updates
-
 # Workaround due to dracut version bump, please remove eventually
 # FIXME: remove
 RUN echo -e "systemdsystemconfdir=/etc/systemd/system\nsystemdsystemunitdir=/usr/lib/systemd/system\n" | tee /etc/dracut.conf.d/fix-bootc.conf
