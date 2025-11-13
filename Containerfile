@@ -73,14 +73,48 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       open-vm-tools \
       plymouth \
       nano \
-      vi \
       distrobox \
+      podman \
+      linux-firmware \
+	linux-firmware-amdgpu \
+	linux-firmware-atheros \
+	linux-firmware-broadcom \
+	linux-firmware-intel \
+	linux-firmware-mediatek \
+	linux-firmware-other \
+	linux-firmware-radeon \
+	linux-firmware-realtek \
+      cifs-utils \
+	firewalld \
+	fuse2 \
+	fuse3 \
+	fuse-common \
+	fwupd  \
+	gvfs-smb \
+	ifuse \
+	libcamera \
+	gst-plugin-libcamera \
+	libcamera-tools \
+	libimobiledevice \
+	man-db \
+	rclone \
+	systemd \
+	tuned \
+	tuned-ppd \
+	unzip \
+	vim \
+	micro \
+	whois \
       ${DEV_DEPS} && \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
 
 RUN echo "%wheel      ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
 sed -i '/Defaults env_reset/c\Defaults env_reset,pwfeedback' /etc/sudoers
+
+RUN sed -i 's|^ExecStart=.*|ExecStart=/usr/bin/bootc update --quiet|' /usr/lib/systemd/system/bootc-fetch-apply-updates.service && \
+sed -i 's|^OnUnitInactiveSec=.*|OnUnitInactiveSec=7d\nPersistent=true|' /usr/lib/systemd/system/bootc-fetch-apply-updates.timer && \
+systemctl enable bootc-fetch-apply-updates
 
 # Workaround due to dracut version bump, please remove eventually
 # FIXME: remove
