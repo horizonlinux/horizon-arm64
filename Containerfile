@@ -127,6 +127,7 @@ RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
     pacman -S --clean --noconfirm
 
 RUN pacman -Syyuu --noconfirm \
+       system-config-printer \
        glibc-locales \
        aurorae \
        bluedevil \
@@ -217,10 +218,11 @@ RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
 RUN systemd-sysusers
 
 RUN systemctl enable sddm && \
-sed -i '/Current=/c\Current=breeze' /usr/lib/sddm/sddm.conf.d/default.conf && \
-sed -i '/CursorSize=/c\CursorSize=24' /usr/lib/sddm/sddm.conf.d/default.conf && \
-sed -i '/CursorTheme=/c\CursorTheme=breeze_cursors' /usr/lib/sddm/sddm.conf.d/default.conf && \
+  sed -i '/Current=/c\Current=breeze' /usr/lib/sddm/sddm.conf.d/default.conf && \
+  sed -i '/CursorSize=/c\CursorSize=24' /usr/lib/sddm/sddm.conf.d/default.conf && \
+  sed -i '/CursorTheme=/c\CursorTheme=breeze_cursors' /usr/lib/sddm/sddm.conf.d/default.conf && \
   systemctl enable NetworkManager && \
+  systemctl enable cups && \
   systemctl enable plasma-setup.service
 #  systemctl enable plasma-setup.service && \
 #  systemctl enable vmtoolsd.service && \
