@@ -135,7 +135,7 @@ RUN pacman -Syyuu --noconfirm \
        dolphin \
        drkonqi \
        flatpak-kcm \
-       horizon-wallpapers \
+#       horizon-wallpapers \
        kaccounts-integration \
        kaccounts-providers \
        kactivitymanagerd \
