@@ -242,7 +242,4 @@ RUN mkdir -p /usr/lib/ostree && \
 
 RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
-RUN echo "LISTING ALL PACKAGES" && \
-pacman -Q > /installed-packages
-
 RUN bootc container lint
