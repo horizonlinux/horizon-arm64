@@ -52,6 +52,11 @@ pacman -Syu --noconfirm
 RUN pacman -Syu --noconfirm --overwrite "*" \
       filesystem-horizon \
       base \
+      cups \
+      cups-pdf \
+      bluez-cups \
+      cups-pk-helper \
+      cups-browsed \
       dracut \
       linux \
       linux-firmware \
