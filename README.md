@@ -1,12 +1,21 @@
-# Arch Linux Bootc
+# <img width="2335" height="1296" alt="Horizon" src="https://raw.githubusercontent.com/horizonlinux/horizon/refs/heads/main/.github/logo.png" />
 
-Experiment to see if Bootc could work on Arch Linux. And it does! With the composefs-backend :)
+General use distro created using Arch Linux with BootC and composeFS.
 
-<img width="2335" height="1296" alt="image" src="https://github.com/user-attachments/assets/0a19ad09-fdb6-4b7f-96f0-28ae9df12889" />
+## I need to install a package acrodd the entire system. How do I do it?
+You can check if the package is avaible as one of our pre-packaged system extensions.
+If it isn't avaible there, you can create your own system extension or make a custom image based on Horizon.
 
-<img width="2305" height="846" alt="image" src="https://github.com/user-attachments/assets/f496a2f4-0782-408c-b207-c7acdde2e5ac" />
+## Creating image based on Horizon
 
-Its Arch! Its Bootc! Its cool!
+a) for personal use:
+  - Fork this repository and edit it how you like.
+  - Put at the top of `README.md` that this image is for personal use only
+b) different usecase:
+  - Fork this repository and edit it how you like.
+  - Remove `filesystem-horizon` package. `filesystem-horizon` is the package that contains Horizon branding,
+    if you are making an image with a different usecase, you are most likely going to release it to the public,
+    and we do not want people reporting issues with your image to us.
 
 ## Building
 
