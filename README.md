@@ -2,7 +2,7 @@
 
 General use distro created using Arch Linux with BootC and composeFS.
 
-## I need to install a package acrodd the entire system. How do I do it?
+## I need to install a package across the entire system. How do I do it?
 You can check if the package is avaible as one of our pre-packaged system extensions.
 If it isn't avaible there, you can create your own system extension or make a custom image based on Horizon.
 
