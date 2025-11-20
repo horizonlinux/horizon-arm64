@@ -141,6 +141,7 @@ RUN pacman -Syyuu --noconfirm \
        breeze-gtk \
        dolphin \
        drkonqi \
+       flatpak \
        flatpak-kcm \
        horizon-wallpapers \
        kaccounts-integration \
@@ -237,6 +238,9 @@ RUN systemctl enable sddm && \
   sed -i '/CursorSize=/c\CursorSize=24' /usr/lib/sddm/sddm.conf.d/default.conf && \
   sed -i '/CursorTheme=/c\CursorTheme=breeze_cursors' /usr/lib/sddm/sddm.conf.d/default.conf && \
   systemctl enable NetworkManager && \
+  systemctl enable bluetooth && \
+# enable sysexts for later released sysexts like ones containg Wine, Steam, and drivers.
+  sysremctl enable systemd-sysext && \
   systemctl enable cups && \
   systemctl enable plasma-setup.service
 #  systemctl enable plasma-setup.service && \
