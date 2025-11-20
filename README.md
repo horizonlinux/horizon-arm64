@@ -10,7 +10,8 @@ If it isn't avaible there, you can create your own system extension or make a cu
 
 a) for personal use:
   - Fork this repository and edit it how you like.
-  - Put at the top of `README.md` that this image is for personal use only
+  - Put at the top of `README.md` that this image is for personal use only.
+
 b) different usecase:
   - Fork this repository and edit it how you like.
   - Remove `filesystem-horizon` package. `filesystem-horizon` is the package that contains Horizon branding,
