@@ -114,18 +114,14 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
 RUN echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
 echo "Defaults env_reset,pwfeedback" >> /etc/sudoers
 
-# Workaround due to dracut version bump, please remove eventually
-# FIXME: remove
-# RUN echo -e "systemdsystemconfdir=/etc/systemd/system\nsystemdsystemunitdir=/usr/lib/systemd/system\n" | tee /etc/dracut.conf.d/fix-bootc.conf
-
 RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
-    git clone https://github.com/bootc-dev/bootc.git /tmp/bootc && \
-    cd /tmp/bootc && \
-    #rm -rf /tmp/bootc/crates/lib/src/bootc_composefs/state.rs && \
-    #curl -o /tmp/bootc/crates/lib/src/bootc_composefs/state.rs https://raw.githubusercontent.com/bootc-dev/bootc/581488cb3c782a208f2fd39518bb19f90e968d73/crates/lib/src/bootc_composefs/state.rs && \
-    make bin install-all && \
+    git clone "https://github.com/bootc-dev/bootc.git" /tmp/bootc && \
+    make -C /tmp/bootc bin install-all && \
+    mkdir -p /etc/dracut.conf.d && \
+    printf "systemdsystemconfdir=/etc/systemd/system\nsystemdsystemunitdir=/usr/lib/systemd/system\n" | tee /usr/lib/dracut/dracut.conf.d/30-bootcrew-fix-bootc-module.conf && \
+    printf 'hostonly=no\nadd_dracutmodules+=" ostree bootc "' | tee /usr/lib/dracut/dracut.conf.d/30-bootcrew-bootc-modules.conf && \
     sh -c 'export KERNEL_VERSION="$(basename "$(find /usr/lib/modules -maxdepth 1 -type d | grep -v -E "*.img" | tail -n 1)")" && \
-    dracut --force --no-hostonly --reproducible --zstd --verbose --kver "$KERNEL_VERSION"  "/usr/lib/modules/$KERNEL_VERSION/initramfs.img"' && \
+    dracut --force --no-hostonly --reproducible --zstd --verbose --kver "$KERNEL_VERSION" "/usr/lib/modules/$KERNEL_VERSION/initramfs.img"' && \
     pacman -S --clean --noconfirm
 
 RUN pacman -Syyuu --noconfirm \
