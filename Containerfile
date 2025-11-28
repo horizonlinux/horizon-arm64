@@ -205,7 +205,7 @@ RUN useradd -m --shell=/bin/bash build && usermod -L build && \
 USER build
 WORKDIR /home/build
 RUN git clone https://aur.archlinux.org/flatpak-git.git /tmp/flatpak && \
-    cd /tmp/bazzar-krunner && \
+    cd /tmp/flatpak && \
     makepkg -sri --noconfirm && \
     git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
