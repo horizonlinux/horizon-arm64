@@ -215,9 +215,9 @@ RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
 	git clone https://aur.archlinux.org/bazaar.git /tmp/bazzar && \
     cd /tmp/bazzar && \ 
     makepkg -sri --noconfirm && \
-	git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
-    cd /tmp/bazzar-krunner && \ 
-    makepkg -sri --noconfirm
+	#git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
+    #cd /tmp/bazzar-krunner && \ 
+    #makepkg -sri --noconfirm
 USER root
 WORKDIR /
 
