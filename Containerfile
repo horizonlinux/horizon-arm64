@@ -72,7 +72,6 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       ostree \
       mkinitcpio \
       sudo \
-      open-vm-tools \
       plymouth \
       nano \
       distrobox \
