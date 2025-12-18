@@ -36,7 +36,7 @@
 
 FROM scratch AS ctx
 
-FROM docker.io/archlinux/archlinux:latest
+FROM docker.io/ogarcia/archlinux:latest
 
 COPY system_files /
 
