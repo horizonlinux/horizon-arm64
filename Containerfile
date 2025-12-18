@@ -57,8 +57,7 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       cups-pk-helper \
       cups-browsed \
       dracut \
-      linux \
-      linux-firmware \
+      linux-aarch64 \
       ostree \
       systemd \
       btrfs-progs \
