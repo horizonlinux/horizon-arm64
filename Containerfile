@@ -116,12 +116,6 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
 
-# eff GNU ( as much it is possible to)
-RUN pacman -Syu --noconfirm \
-      uutils-coreutils \
-      sudo-rs \
-      bat
-
 RUN echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
 echo "Defaults env_reset,pwfeedback" >> /etc/sudoers
 
@@ -256,6 +250,12 @@ RUN systemctl enable sddm && \
 #  systemctl enable plasma-setup.service && \
 #  systemctl enable vmtoolsd.service && \
 #  systemctl enable vmware-vmblock-fuse.service
+
+# eff GNU ( as much it is possible to)
+RUN pacman -Syu --noconfirm \
+      uutils-coreutils \
+      sudo-rs \
+      bat
 
 # Clean up
 RUN rm -rf /var/cache/pacman/pkg/ && \
