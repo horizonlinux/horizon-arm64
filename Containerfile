@@ -44,13 +44,12 @@ ENV DEV_DEPS="base-devel git rust go-md2man"
 
 ENV DRACUT_NO_XATTR=1
 
-RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
-echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
-echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
-pacman -Syu --noconfirm
+#RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
+#echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
+#echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
+#pacman -Syu --noconfirm
 
 RUN pacman -Syu --noconfirm --overwrite "*" \
-      filesystem-horizon \
       base \
       cups \
       cups-pdf \
@@ -79,7 +78,24 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       nano \
       distrobox \
       podman \
-      $(pacman -Ss '^linux-firmware') \
+      linux-firmware \
+      linux-firmware-amdgpu \
+      linux-firmware-atheros \
+      linux-firmware-broadcom \
+      linux-firmware-cirrus \
+      linux-firmware-intel \
+      linux-firmware-liquidio \
+      linux-firmware-marvell \
+      linux-firmware-mediatek \
+      linux-firmware-mellanox \
+      linux-firmware-nfp \
+      linux-firmware-nvidia \
+      linux-firmware-other \
+      linux-firmware-qcom \
+      linux-firmware-qlogic \
+      linux-firmware-radeon \
+      linux-firmware-realtek \
+      linux-firmware-whence \
       cifs-utils \
       firewalld \
       fuse2 \
@@ -101,6 +117,19 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       ${DEV_DEPS} && \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
+
+USER build
+WORKDIR /home/build
+RUN git clone https://github.com/horizonlinux/filesystem.git /tmp/horizon-fs && \
+    cd /tmp/horizon-fs && \ 
+    makepkg -sri --noconfirm && \
+	echo hi
+USER root
+WORKDIR /
+
+RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
+    pacman -Rns --noconfirm base-devel rust && \
+	  pacman -S --clean
 
 # eff GNU ( as much it is possible to)
 RUN pacman -Syu --noconfirm \
@@ -131,7 +160,6 @@ RUN pacman -Syyuu --noconfirm \
        drkonqi \
        flatpak \
        flatpak-kcm \
-       horizon-wallpapers \
        kaccounts-integration \
        kaccounts-providers \
        kactivitymanagerd \
@@ -205,7 +233,10 @@ RUN useradd -m --shell=/bin/bash build && usermod -L build && \
 
 USER build
 WORKDIR /home/build
-RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
+RUN git clone https://github.com/horizonlinux/horizon-wallpapers /tmp/horizon-wallpapers && \
+    cd /tmp/horizon-wallpapers && \ 
+    makepkg -sri --noconfirm && \
+	git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
     makepkg -sri --noconfirm && \
 	git clone https://aur.archlinux.org/bazaar.git /tmp/bazzar && \
@@ -229,6 +260,7 @@ RUN systemctl enable sddm && \
   sed -i '/CursorSize=/c\CursorSize=24' /usr/lib/sddm/sddm.conf.d/default.conf && \
   sed -i '/CursorTheme=/c\CursorTheme=breeze_cursors' /usr/lib/sddm/sddm.conf.d/default.conf && \
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && \
+  systemctl disable systemd-firstboot && \
   systemctl enable NetworkManager && \
   systemctl enable bluetooth && \
 # enable sysexts for later released sysexts like ones containg Wine, Steam, and drivers.
@@ -270,7 +302,5 @@ RUN sed -i 's|^HOME=.*|HOME=/var/home|' "/etc/default/useradd"
 RUN mkdir -p /usr/lib/ostree && \
     printf  "[composefs]\nenabled = yes\n[sysroot]\nreadonly = true\n" | \
     tee "/usr/lib/ostree/prepare-root.conf"
-
-RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
 
 RUN bootc container lint
