@@ -221,11 +221,13 @@ WORKDIR /home/build
 RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/kiss/PKGBUILD && \
-    makepkg -sri --noconfirm && \
+    makepkg -sr --noconfirm && \
+	pacman -U --skippgpcheck /tmp/kiss/$(find . -name "plasma-setup-git*aarch64.pkg.tar.xz" | grep -v debug)
 	git clone https://aur.archlinux.org/bazaar.git /tmp/bazzar && \
     cd /tmp/bazzar && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/bazaar/PKGBUILD && \
-    makepkg -sri --noconfirm && \
+    makepkg -sr --noconfirm && \
+	pacman -U --skippgpcheck /tmp/kiss/$(find . -name "bazaar*aarch64.pkg.tar.xz" | grep -v debug)
 	#git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
     #cd /tmp/bazzar-krunner && \ 
     #makepkg -sri --noconfirm
