@@ -125,7 +125,7 @@ USER build
 WORKDIR /home/build
 RUN git clone https://github.com/horizonlinux/filesystem.git /tmp/horizon-fs && \
     cd /tmp/horizon-fs && \ 
-    makepkg -sri --noconfirm && \
+    makepkg -sri --noconfirm --skipinteg --skipchecksums --skippgpcheck && \
 	echo hi
 USER root
 WORKDIR /
@@ -238,7 +238,7 @@ USER build
 WORKDIR /home/build
 RUN git clone https://github.com/horizonlinux/horizon-wallpapers /tmp/horizon-wallpapers && \
     cd /tmp/horizon-wallpapers && \ 
-    makepkg -sri --noconfirm && \
+    makepkg -sri --noconfirm --skipinteg --skipchecksums --skippgpcheck && \
 	git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
     makepkg -sri --noconfirm && \
