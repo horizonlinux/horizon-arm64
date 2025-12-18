@@ -44,7 +44,8 @@ ENV DEV_DEPS="base-devel git rust go-md2man"
 
 ENV DRACUT_NO_XATTR=1
 
-#RUN echo "[horizon-pacman]" >> /etc/pacman.conf && \
+RUN sed -i '/#SigLevel = Optional TrustedOnly/c\SigLevel = Optional TrustAll' /etc/pacman.conf && \
+	sed -i '/SigLevel = Optional TrustedOnly/c\SigLevel = Optional TrustAll' /etc/pacman.conf
 #echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
 #echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
 #pacman -Syu --noconfirm
@@ -215,13 +216,11 @@ WORKDIR /home/build
 RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/kiss/PKGBUILD && \
-    makepkg -sr --noconfirm && \
-	pacman -U --skippgpcheck /tmp/kiss/$(find . -name "plasma-setup-git*aarch64.pkg.tar.xz" | grep -v debug)
+    makepkg -sri --noconfirm && \
 	git clone https://aur.archlinux.org/bazaar.git /tmp/bazzar && \
     cd /tmp/bazzar && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/bazaar/PKGBUILD && \
-    makepkg -sr --noconfirm && \
-	pacman -U --skippgpcheck /tmp/kiss/$(find . -name "bazaar*aarch64.pkg.tar.xz" | grep -v debug)
+    makepkg -sri --noconfirm && \
 	#git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
     #cd /tmp/bazzar-krunner && \ 
     #makepkg -sri --noconfirm
