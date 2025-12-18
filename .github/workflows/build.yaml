@@ -92,8 +92,17 @@ jobs:
           sep-tags: " "
           sep-annotations: " "
 
+      - name: Change image name depending on architecture
+        env:
+          BUILD_PLATFORM: ${{ matrix.platform }}
+        run: |
+          if [ "${BUILD_PLATFORM}" != "" ] ; then
+            echo "IMAGE_NAME=${IMAGE_NAME}-${{ matrix.platform }}" >> $GITHUB_ENV
+          fi
+          
       - name: Build Image
         id: build_image
+        env:
         uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
         with:
           containerfiles: |
