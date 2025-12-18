@@ -116,6 +116,11 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
   pacman -S --clean && \
   rm -rf /var/cache/pacman/pkg/*
 
+# Create build user
+RUN useradd -m --shell=/bin/bash build && usermod -L build && \
+    cp /etc/sudoers /etc/sudoers.bak && \
+    echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 USER build
 WORKDIR /home/build
 RUN git clone https://github.com/horizonlinux/filesystem.git /tmp/horizon-fs && \
