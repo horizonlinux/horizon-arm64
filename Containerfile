@@ -208,12 +208,17 @@ RUN pacman -Syyuu --noconfirm \
 
 # Create build user
 RUN useradd -m --shell=/bin/bash build && usermod -L build && \
+	cp /etc/pacman.conf /etc/pacman.conf.bak && \
+	sed -i '/^\[options\]/a LocalFileSigLevel = Never' /etc/pacman.conf
     cp /etc/sudoers /etc/sudoers.bak && \
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 USER build
 WORKDIR /home/build
-RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
+RUN git clone https://github.com/horizonlinux/horizon-wallpapers.git /tmp/hwall && \
+	cd /tmp/hwall && \
+	makepkg -sri --noconfirm && \
+	git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/kiss/PKGBUILD && \
     makepkg -sri --noconfirm && \
@@ -228,7 +233,7 @@ RUN git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
 USER root
 WORKDIR /
 
-RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && \
+RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && && mv /etc/pacman.conf.bak /etc/pacman.conf && \
     pacman -Rns --noconfirm base-devel rust && \
 	  pacman -S --clean
 
