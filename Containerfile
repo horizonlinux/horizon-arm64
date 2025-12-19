@@ -216,8 +216,8 @@ RUN git clone https://github.com/horizonlinux/horizon-wallpapers.git /tmp/hwall 
     cd /tmp/kiss && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/kiss/PKGBUILD && \
     makepkg -sri --noconfirm && \
-	git clone https://aur.archlinux.org/bazaar.git /tmp/bazzar && \
-    cd /tmp/bazzar && \ 
+	git clone https://aur.archlinux.org/bazaar.git /tmp/bazaar && \
+    cd /tmp/bazaar && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/bazaar/PKGBUILD && \
     makepkg -sri --noconfirm && \
 	#git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
