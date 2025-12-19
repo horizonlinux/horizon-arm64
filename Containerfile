@@ -121,7 +121,7 @@ RUN --mount=type=tmpfs,dst=/tmp --mount=type=tmpfs,dst=/root \
     printf 'reproducible=yes\nhostonly=no\ncompress=zstd\nadd_dracutmodules+=" ostree bootc "' | tee "/usr/lib/dracut/dracut.conf.d/30-bootcrew-bootc-container-build.conf" && \
     plymouth-set-default-theme tribar && \
     dracut --force "$(find /usr/lib/modules -maxdepth 1 -type d | grep -v -E "*.img" | tail -n 1)/initramfs.img" && \
-    pacman -S --clean --noconfirm
+    pacman -S --clean
 
 RUN pacman -Syyuu --noconfirm \
        system-config-printer \
@@ -197,7 +197,7 @@ RUN pacman -Syyuu --noconfirm \
        systemsettings \
        xdg-desktop-portal-kde \
        wireplumber && \
-  pacman -S --clean --noconfirm && \
+  pacman -S --clean&& \
   rm -rf /var/cache/pacman/pkg/
 
 # Create build user
@@ -211,7 +211,7 @@ USER build
 WORKDIR /home/build
 RUN git clone https://github.com/horizonlinux/horizon-wallpapers.git /tmp/hwall && \
 	cd /tmp/hwall && \
-	makepkg -sri --noconfirm && \
+	makepkg -sri --noconfirm --skipinteg --skipchecksums --skippgpcheck && \
 	git clone https://aur.archlinux.org/plasma-setup-git.git /tmp/kiss && \
     cd /tmp/kiss && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/kiss/PKGBUILD && \
@@ -229,7 +229,7 @@ WORKDIR /
 
 RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && && mv /etc/pacman.conf.bak /etc/pacman.conf && \
     pacman -Rns --noconfirm base-devel rust && \
-	  pacman -S --clean --noconfirm
+	  pacman -S --clean
 
 RUN systemd-sysusers
 
