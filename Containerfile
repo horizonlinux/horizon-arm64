@@ -219,17 +219,15 @@ RUN git clone https://github.com/horizonlinux/horizon-wallpapers.git /tmp/hwall 
 	git clone https://aur.archlinux.org/bazaar.git /tmp/bazaar && \
     cd /tmp/bazaar && \ 
 	sed -i "/arch=('x86_64')/c\arch=('aarch64')" /tmp/bazaar/PKGBUILD && \
-    makepkg -sri --noconfirm && \
-	#git clone https://aur.archlinux.org/krunner-bazaar.git /tmp/bazzar-krunner && \
-    #cd /tmp/bazzar-krunner && \ 
-    #makepkg -sri --noconfirm
-	echo hi
+    makepkg -sri --noconfirm
+
 USER root
 WORKDIR /
-
-RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && && mv /etc/pacman.conf.bak /etc/pacman.conf && \
+RUN userdel build && \
+	mv /etc/sudoers.bak /etc/sudoers && \
+	mv /etc/pacman.conf.bak /etc/pacman.conf && \
     pacman -Rns --noconfirm base-devel rust && \
-	  pacman -S --clean
+	pacman -S --clean
 
 RUN systemd-sysusers
 
@@ -245,9 +243,6 @@ RUN systemctl enable sddm && \
   systemctl enable systemd-sysext && \
   systemctl enable cups && \
   systemctl enable plasma-setup.service
-#  systemctl enable plasma-setup.service && \
-#  systemctl enable vmtoolsd.service && \
-#  systemctl enable vmware-vmblock-fuse.service
 
 # eff GNU ( as much it is possible to without system falling apart )
 RUN pacman -Syu --noconfirm \
@@ -256,7 +251,8 @@ RUN pacman -Syu --noconfirm \
       bat
 
 # Clean up
-RUN rm -rf /var/cache/pacman/pkg/ && \
+RUN pacman -S --clean && \
+	rm -rf /var/cache/pacman/pkg/ && \
 	rm -rf /tmp/* && \
 	rm -rf /usr/share/applications/vim.desktop && \
 	rm -rf /usr/share/applications/system-config-printer.desktop && \
