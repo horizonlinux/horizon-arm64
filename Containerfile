@@ -108,7 +108,7 @@ RUN pacman -Syu --noconfirm --overwrite "*" \
       whois \
       fastfetch \
       ${DEV_DEPS} && \
-  pacman -S --clean && \
+  pacman -S --clean --noconfirm && \
   rm -rf /var/cache/pacman/pkg/*
 
 RUN echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
@@ -197,7 +197,7 @@ RUN pacman -Syyuu --noconfirm \
        systemsettings \
        xdg-desktop-portal-kde \
        wireplumber && \
-  pacman -S --clean && \
+  pacman -S --clean --noconfirm && \
   rm -rf /var/cache/pacman/pkg/
 
 # Create build user
@@ -229,7 +229,7 @@ WORKDIR /
 
 RUN userdel build && mv /etc/sudoers.bak /etc/sudoers && && mv /etc/pacman.conf.bak /etc/pacman.conf && \
     pacman -Rns --noconfirm base-devel rust && \
-	  pacman -S --clean
+	  pacman -S --clean --noconfirm
 
 RUN systemd-sysusers
 
