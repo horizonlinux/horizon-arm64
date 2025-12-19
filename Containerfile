@@ -44,12 +44,6 @@ ENV DEV_DEPS="base-devel git rust go-md2man"
 
 ENV DRACUT_NO_XATTR=1
 
-RUN sed -i '/#SigLevel = Optional TrustedOnly/c\SigLevel = Optional TrustAll' /etc/pacman.conf && \
-	sed -i '/SigLevel = Optional TrustedOnly/c\SigLevel = Optional TrustAll' /etc/pacman.conf
-#echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf && \
-#echo "Server = https://horizonlinux.github.io/pacman/x86_64" >> /etc/pacman.conf && \
-#pacman -Syu --noconfirm
-
 RUN pacman -Syu --noconfirm --overwrite "*" \
       base \
       cups \
