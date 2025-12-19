@@ -203,7 +203,7 @@ RUN pacman -Syyuu --noconfirm \
 # Create build user
 RUN useradd -m --shell=/bin/bash build && usermod -L build && \
 	cp /etc/pacman.conf /etc/pacman.conf.bak && \
-	sed -i '/^\[options\]/a LocalFileSigLevel = Never' /etc/pacman.conf
+	sed -i '/^\[options\]/a LocalFileSigLevel = Never' /etc/pacman.conf && \
     cp /etc/sudoers /etc/sudoers.bak && \
     echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
@@ -249,7 +249,7 @@ RUN systemctl enable sddm && \
 #  systemctl enable vmtoolsd.service && \
 #  systemctl enable vmware-vmblock-fuse.service
 
-# eff GNU ( as much it is possible to)
+# eff GNU ( as much it is possible to without system falling apart )
 RUN pacman -Syu --noconfirm \
       uutils-coreutils \
       sudo-rs \
